@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -31,6 +32,10 @@ func init() {
 	}
 }
 
+// @title Golang GIN API
+// @version 1.0
+// @description An expandable template API
+// @termsOfService http://github.com/thisishugow
 func main() {
 	global.Logger.Debugf("%s: go-programming-tour-book/%s", "測試測試", "blog-api")
 
@@ -43,7 +48,13 @@ func main() {
 		WriteTimeout:   global.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	s.ListenAndServe()
+	listenAddr := fmt.Sprintf("Start to listen on: %s\n", fmt.Sprintf("http://127.0.0.1%s", s.Addr))
+	global.Logger.Info(listenAddr)
+	global.Logger.Info(fmt.Sprintf("Swag on: %s\n", fmt.Sprintf("http://127.0.0.1%s/swagger/index.html", s.Addr)))
+	err := s.ListenAndServe()
+	if err != nil {
+		global.Logger.Fatalf("main.s.ListenAndServe() err:%v", err)
+	}
 }
 
 func setupSetting() error {

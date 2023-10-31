@@ -152,25 +152,31 @@ func (l *Logger) Output(message string) {
 }
 
 func (l *Logger) Debug(v ...interface{}) {
+	fmt.Print(fmt.Sprint(v...))
 	l.WithLevel(LevelDebug).Output(fmt.Sprint(v...))
 }
 
 func (l *Logger) Debugf(format string, v ...interface{}) {
+	fmt.Printf(fmt.Sprintf(format, v...))
 	l.WithLevel(LevelDebug).Output(fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Info(v ...interface{}) {
+	fmt.Print(fmt.Sprint(v...))
 	l.WithLevel(LevelInfo).Output(fmt.Sprint(v...))
 }
 
 func (l *Logger) Infof(format string, v ...interface{}) {
+	fmt.Printf(fmt.Sprintf(format, v...))
 	l.WithLevel(LevelInfo).Output(fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Fatal(v ...interface{}) {
+	fmt.Print(fmt.Sprint(v...))
 	l.WithLevel(LevelFatal).Output(fmt.Sprint(v...))
 }
 
 func (l *Logger) Fatalf(format string, v ...interface{}) {
+	fmt.Printf(fmt.Sprintf(format, v...))
 	l.WithLevel(LevelFatal).Output(fmt.Sprintf(format, v...))
 }
