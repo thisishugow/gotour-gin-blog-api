@@ -1,0 +1,22 @@
+Server:
+  RunMode: debug
+  HttpPort: 8000
+  ReadTimeout: 60
+  WriteTimeout: 60
+App:
+  DefaultPageSize: 10
+  MaxPageSize: 100
+  LogSavePath: storage/logs
+  LogFileName: app 
+  LogFileExt: log
+Database:
+  DBType: postgresql
+  Username: demodb01 #填写你的数据库账号
+  Password: demoddb01 #填写你的数据库密码
+  Host: localhost:5432
+  DBName: blog_api
+  TablePrefix: blog_
+  Charset: utf8
+  ParseTime: True
+  MaxIdleConns: 10
+  MaxOpenConns: 30
