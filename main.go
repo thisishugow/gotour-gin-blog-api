@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"yuwang.idv/go-tour/blog-api/global"
+	"yuwang.idv/go-tour/blog-api/internal/model"
 	"yuwang.idv/go-tour/blog-api/internal/routers"
 	"yuwang.idv/go-tour/blog-api/pkg/setting"
 )
@@ -15,6 +16,11 @@ func init() {
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
+	}
+
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatal("init.setupDBEngine err: %v", err)
 	}
 }
 
@@ -47,13 +53,23 @@ func setupSetting() error {
 		return err
 	}
 
-	err = setting.ReadSection("Server", &global.DatabaseSetting)
+	err = setting.ReadSection("Database", &global.DatabaseSetting)
 	if err != nil {
 		return err
 	}
 
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+
+	return nil
+}
+
+func setupDBEngine() error {
+	var err error
+	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
