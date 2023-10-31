@@ -6,9 +6,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"yuwang.idv/go-tour/blog-api/global"
 	"yuwang.idv/go-tour/blog-api/internal/model"
 	"yuwang.idv/go-tour/blog-api/internal/routers"
+	"yuwang.idv/go-tour/blog-api/pkg/logger"
 	"yuwang.idv/go-tour/blog-api/pkg/setting"
 )
 
@@ -22,9 +24,16 @@ func init() {
 	if err != nil {
 		log.Fatal("init.setupDBEngine err: %v", err)
 	}
+
+	err = setupLogger()
+	if err != nil {
+		log.Fatal("init.setupLogger err: %v", err)
+	}
 }
 
 func main() {
+	global.Logger.Debugf("%s: go-programming-tour-book/%s", "測試測試", "blog-api")
+
 	gin.SetMode(global.ServerSetting.RunMode)
 	router := routers.NewRouter()
 	s := &http.Server{
@@ -60,7 +69,6 @@ func setupSetting() error {
 
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
-
 	return nil
 }
 
@@ -70,6 +78,19 @@ func setupDBEngine() error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func setupLogger() error {
+	global.Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename: global.AppSetting.LogSavePath + "/" +
+			global.AppSetting.LogFileName +
+			global.AppSetting.LogFileExt,
+		MaxSize:   600,
+		MaxAge:    10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
 
 	return nil
 }
